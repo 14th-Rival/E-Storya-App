@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/avatar_background.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/avatar_not_selected.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/avatar_selected.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/background_edittext.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/background_gradient.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/background_main_rounded_corners.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/background_sub_rounded_corners.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/button_background.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.2385" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/layout/activity_signup.xml" value="0.2230769230769231" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/layout/adapter_avatar_cardview.xml" value="0.9" />
+        <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/layout/dialog_avatar_selection.xml" value="0.25" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
