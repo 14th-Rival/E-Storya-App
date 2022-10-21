@@ -4,39 +4,165 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainPages.MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/app_name"
+        android:textColor="@color/dark_red"
+        android:textSize="38sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/profileCardView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/profileCardView"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="120dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_title">
 
-    <Button
+        <ImageView
+            android:id="@+id/imgview_ava"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/avatar_selected"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="@+id/profile_background"
+            app:srcCompat="@drawable/ic_baseline_person_28" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/body_edit_profile_"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profileCardView"
+        app:layout_constraintEnd_toEndOf="@+id/profileCardView"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="@+id/profileCardView"
+        app:layout_constraintTop_toTopOf="@+id/profileCardView"
+        app:layout_constraintVertical_bias="0.90">
+
+        <com.innov.testchat.ScaleImageButton
+            android:id="@+id/btn_change_ava"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_image_24"
+            android:elevation="8dp"
+            android:onClick="onClick"
+            android:padding="20dp"
+            app:iconTint="@color/white" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tv_layout_name"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="bottom"
+        android:textColorHint="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileCardView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tv_input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edittext"
+            android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^*()-_. "
+            android:hint="@string/user_name"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/set_error_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/dark_red"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/tv_layout_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_layout_name" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tv_layout_room"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="8dp"
+        android:gravity="bottom"
+        android:textColorHint="@android:color/black"
+        app:layout_constraintEnd_toEndOf="@+id/tv_layout_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_layout_name"
+        app:layout_constraintTop_toBottomOf="@+id/set_error_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tv_input_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edittext"
+            android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^*()-_. "
+            android:hint="@string/room_name"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/set_error_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/dark_red"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/tv_layout_room"
+        app:layout_constraintTop_toBottomOf="@+id/tv_layout_room" />
+
+    <com.innov.testchat.ScaleButton
         android:id="@+id/button_login"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/button_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/button_background"
-        android:fontFamily="@font/poppins_medium"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="Register Account"
-        android:textColor="@android:color/black"
+        android:onClick="onClick"
+        android:text="@string/chat_room"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/tv_layout_room"
+        app:layout_constraintStart_toStartOf="@+id/tv_layout_room"
+        app:layout_constraintTop_toBottomOf="@+id/set_error_room" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/version"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/button_login"
-        app:layout_constraintStart_toStartOf="@+id/button_login"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        app:layout_constraintStart_toStartOf="@+id/button_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

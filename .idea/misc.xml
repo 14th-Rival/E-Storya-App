@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/avatar_background.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/avatar_not_selected.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/avatar_selected.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/background_edittext.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/background_gradient.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/background_main_rounded_corners.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/background_sub_rounded_corners.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/button_background.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.145" />
+        <entry key="..\:/Github/Chat-System/app/src/main/res/layout/activity_signup.xml" value="0.21105072463768115" />
         <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/avatar_background.xml" value="0.2385" />
         <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/avatar_not_selected.xml" value="0.2385" />
         <entry key="..\:/Users/john.cachaoero/AndroidStudioProjects/TestChat/app/src/main/res/drawable/avatar_selected.xml" value="0.2385" />

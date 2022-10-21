@@ -14,4 +14,8 @@
     <color name="subTheme">#80f077</color>
     <color name="textHint">#707e92</color>
     <color name="textColor">#1e1f33</color>
+
+    <color name="dark_red">#D1193E</color>
+    <color name="mid_red">#EE3E38</color>
+    <color name="light_red">#F86E61</color>
 </resources>

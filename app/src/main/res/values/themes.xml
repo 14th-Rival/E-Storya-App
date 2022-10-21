@@ -2,15 +2,22 @@
     <!-- Base application theme. -->
     <style name="Theme.TestChat" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/subTheme</item>
-        <item name="colorPrimaryVariant">@color/mainTheme</item>
+        <item name="colorPrimary">@color/mid_red</item>
+        <item name="colorPrimaryVariant">@color/dark_red</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/textHint</item>
-        <item name="colorSecondaryVariant">@color/textColor</item>
+        <item name="colorSecondary">@color/light_red</item>
+        <item name="colorSecondaryVariant">@color/mid_red</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="colorControlNormal">@color/light_red</item>
+        <item name="colorControlActivated">@color/mid_red</item>
+        <item name="colorControlHighlight">@color/dark_red</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>

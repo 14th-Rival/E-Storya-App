@@ -16,13 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <com.innov.testchat.ScaleImageButton
                 android:id="@+id/imageButton_closeDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:background="@drawable/button_background"
-                android:src="@drawable/ic_baseline_image_24"
+                android:background="@drawable/background_main_rounded_corners"
+                android:onClick="onClick"
+                android:src="@drawable/ic_baseline_close_24"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView"
                 app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toTopOf="@+id/cardView"
@@ -35,6 +36,7 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="50dp"
                 app:cardBackgroundColor="@android:color/transparent"
+                app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +90,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
 
-                            <Button
+                            <com.innov.testchat.ScaleButton
                                 android:id="@+id/button_select"
                                 android:layout_width="fill_parent"
                                 android:layout_height="50dp"
@@ -100,6 +102,7 @@
                                 android:background="@drawable/button_background"
                                 android:fontFamily="@font/poppins_medium"
                                 android:foregroundGravity="fill"
+                                android:onClick="onClick"
                                 android:paddingLeft="15dp"
                                 android:paddingRight="15dp"
                                 android:text="Update Avatar"
