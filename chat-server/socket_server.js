@@ -30,7 +30,7 @@ io.on('connection', function(socket) {
     var userName = '';
     
     socket.on('subscribe', function(data) {
-        console.log('subscribe trigged')
+        console.log('subscribe triggered')
         const room_data = JSON.parse(data)
         userName = room_data.userName;
         const roomName = room_data.roomName;
