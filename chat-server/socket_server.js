@@ -68,7 +68,7 @@ io.on('connection', function(socket) {
         const messageContent = messageData.messageContent
         const roomName = messageData.roomName
 
-        console.log(`[Room Number ${roomName}] ${userName} : ${messageContent}`)
+        console.log(`[Room Number ${roomName}] ${userName} : ${messageContent.stringify}`)
         
         // Just pass the data that has been passed from the writer socket
         const chatData = {
@@ -76,6 +76,7 @@ io.on('connection', function(socket) {
             messageContent : messageContent,
             roomName : roomName
         }
+
         socket.broadcast.to(`${roomName}`).emit('updateChat',JSON.stringify(chatData)) // Need to be parsed into Kotlin object in Kotlin
     })
 

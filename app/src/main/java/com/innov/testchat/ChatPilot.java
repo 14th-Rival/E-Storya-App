@@ -2,11 +2,13 @@ package com.innov.testchat;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
+import io.socket.client.AckWithTimeout;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -20,7 +22,7 @@ public class ChatPilot implements Runnable{
 
 
     // testing
-    private String temp_user = "enzo_dev2";
+    private String temp_user = "enzo_dev1";
     private String temp_room = "android";
 
     @Override
@@ -70,7 +72,68 @@ public class ChatPilot implements Runnable{
 
             mSocket.emit("subscribe", initialData.toString());
 
+            mSocket.on("newUserToChatRoom", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    Log.d(TAG, args[0].toString()+" joined the room");
+
+
+
+//                    testChat();
+                }
+            });
+
         } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void testChat(){
+
+        try {
+            JSONObject sendData = new JSONObject();
+
+            sendData.put("messageContent", "Hello!");
+            sendData.put("roomName", temp_room);
+
+
+            mSocket.emit("newMessage", sendData.toString());
+
+            mSocket.on("updateChat", args -> {
+                Log.d(TAG, "====> args length: "+args.length);
+                Log.d(TAG, "Chat details"+args[0]);
+
+                Object object = null;
+                for (Object arg : args) {
+
+
+                    if (object == null) {
+                        object = arg;
+
+                        Log.d(TAG, "====> Chat!: ");
+
+
+                        try {
+
+                            JSONObject newObj = new JSONObject(object.toString());
+
+                            String userName = newObj.getString("userName");
+                            String messageContent = newObj.getString("messageContent");
+                            String roomName = newObj.getString("roomName");
+
+                            Log.d(TAG, "Chat details: " + "\n" + userName + "\n" + messageContent + "\n" + roomName);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                }
+            });
+
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

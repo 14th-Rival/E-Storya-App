@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -36,6 +38,9 @@ public class ChatRoomActivity extends Activity {
     private List<ChatUser> mChatUserList;
 
 
+    private ChatPilot mChatpilot = new ChatPilot();
+
+
     // Static String
     private String TAG = "ChatRoomTAG:";
     private String temp_user = "enzo_dev2";
@@ -60,11 +65,19 @@ public class ChatRoomActivity extends Activity {
         initializeChatView();
 
 
-
-
-        Thread tite = new Thread(new ChatPilot());
+        Thread tite = new Thread(mChatpilot);
         tite.start();
 //        initializeConnection();
+
+
+        Button send = findViewById(R.id.btn_send);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mChatpilot.testChat();
+            }
+        });
     }
 
     private synchronized void initializeChatView(){
