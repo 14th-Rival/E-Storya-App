@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import com.innov.testchat.Adapters.ChatAdapter;
 import com.innov.testchat.ChatPilot;
 import com.innov.testchat.DataModels.ChatUser;
 import com.innov.testchat.R;
+import com.innov.testchat.ScaleImageButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,21 +33,23 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-public class ChatRoomActivity extends Activity {
+public class ChatRoomActivity extends Activity implements View.OnClickListener {
 
-    private RecyclerView mChatRecycler;
-    private RecyclerView.LayoutManager mChatLayoutManager;
-    private ChatAdapter mChatRoomAdapter;
-    private List<ChatUser> mChatUserList;
+    public RecyclerView mChatRecycler;
+    public RecyclerView.LayoutManager mChatLayoutManager;
+    public ChatAdapter mChatRoomAdapter;
 
-
-    private ChatPilot mChatpilot = new ChatPilot();
-
+    private ChatPilot mChatpilot;
 
     // Static String
-    private String TAG = "ChatRoomTAG:";
-    private String temp_user = "enzo_dev2";
-    private String temp_room = "android";
+    private String TAG = "ChatRoomActivity";
+    private String mUserName = "userName";
+    private String mRoomName = "roomName";
+
+
+    private TextView mRoomNameHeader;
+    private EditText mSendMessage;
+    private ScaleImageButton mSendBtn;
 
 
     /***
@@ -52,51 +57,106 @@ public class ChatRoomActivity extends Activity {
      * This is temporary
      */
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initData();
     }
 
-    private void initView(){
+
+    private synchronized void initView(){
         setContentView(R.layout.activity_chatroom);
+
+        mRoomNameHeader =  findViewById(R.id.room_id);
+        mSendMessage = findViewById(R.id.edit_chat_text);
+        mSendBtn = findViewById(R.id.btn_send);
+
         initializeChatView();
+    }
 
 
-        Thread tite = new Thread(mChatpilot);
-        tite.start();
-//        initializeConnection();
+    private synchronized void initData(){
 
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra(mUserName);
+        String roomName = intent.getStringExtra(mRoomName);
 
-        Button send = findViewById(R.id.btn_send);
+        Log.d(TAG, "====> UserName: "+userName);
+        Log.d(TAG, "====> RoomName: "+roomName);
 
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mChatpilot.testChat();
+        mRoomNameHeader.setText("Welcome to "+roomName+" room");
+
+        initializeThread(userName, roomName);
+    }
+
+    private synchronized void initializeThread(String mUserName, String mRoomName) {
+
+        if (mUserName.isEmpty() | mRoomName.isEmpty()){
+            NullPointerException e = new NullPointerException();
+            Log.e(TAG, e.toString());
+        }
+
+        else {
+            if (mChatpilot == null){
+                mChatpilot = new ChatPilot(
+                        ChatRoomActivity.this,
+                        ChatRoomActivity.this,
+                        mUserName,
+                        mRoomName
+                );
+
+                Thread chatThread = new Thread(mChatpilot);
+                chatThread.start();
             }
-        });
+        }
     }
 
     private synchronized void initializeChatView(){
-
-//        if (mChatUserList.isEmpty()){
-            mChatUserList = new ArrayList<>();
-//        }
-
         mChatRecycler = findViewById(R.id.chat_recycler);
-
         mChatLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        mChatRoomAdapter = new ChatAdapter(ChatRoomActivity.this, mChatUserList);
-
         mChatRecycler.setLayoutManager(mChatLayoutManager);
-        mChatRecycler.setAdapter(mChatRoomAdapter);
     }
 
-    public static void startActivity(Activity mActivity){
+    public static void startActivity(Activity mActivity, String userName, String roomName){
         Intent i = new Intent(mActivity, ChatRoomActivity.class);
+        i.putExtra("userName", userName);
+        i.putExtra("roomName", roomName);
         mActivity.startActivity(i);
+        mActivity.finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_send:
+
+                if (mChatpilot != null){
+
+                    if (!isThereAMessage()){
+                        return;
+                    }
+
+                    mChatpilot.sendChat(mSendMessage.getText().toString());
+                    mSendMessage.setText("");
+                    mSendMessage.clearFocus();
+                }
+
+                break;
+        }
+    }
+
+
+    private boolean isThereAMessage(){
+        String s = mSendMessage.getText().toString();
+
+        if (s.isEmpty()){
+            Log.d(TAG, "====> Empty Message");
+            return false;
+        }
+
+        else {
+            return  true;
+        }
     }
 }

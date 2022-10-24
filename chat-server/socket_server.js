@@ -64,11 +64,11 @@ io.on('connection', function(socket) {
     socket.on('newMessage',function(data) {
         console.log('newMessage triggered')
 
-        const messageData = JSON.parse(data)
+        const messageData = data
         const messageContent = messageData.messageContent
         const roomName = messageData.roomName
 
-        console.log(`[Room Number ${roomName}] ${userName} : ${messageContent.stringify}`)
+        console.log(`[Room Number ${roomName}] ${userName} : ${messageContent}`)
         
         // Just pass the data that has been passed from the writer socket
         const chatData = {

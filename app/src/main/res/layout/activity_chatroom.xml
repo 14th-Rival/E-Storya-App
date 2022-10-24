@@ -4,6 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/room_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center|center_horizontal"
+        android:paddingTop="8dp"
+        android:text="RoomId"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler"
         android:layout_width="match_parent"
@@ -11,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@+id/chat_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/room_id">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -20,6 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,22 +54,41 @@
                 android:background="@drawable/background_edittext"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:imeOptions="actionSend"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_send"
+                app:layout_constraintEnd_toStartOf="@+id/holder_send"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.innov.testchat.ScaleButton
-                android:id="@+id/btn_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/holder_send"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginEnd="16dp"
-                android:text="Send"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/edit_chat_text"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/edit_chat_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".50">
+
+                <com.innov.testchat.ScaleImageButton
+                    android:id="@+id/btn_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_baseline_send_24"
+                    android:onClick="onClick"
+                    android:rotation="0"
+                    android:rotationX="0"
+                    android:text="Send"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/edit_chat_text"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
