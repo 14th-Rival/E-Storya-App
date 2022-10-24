@@ -34,6 +34,9 @@ public class ChatPilot implements Runnable{
     private String TAG = "ChatPilot";
     private Socket mSocket;
 
+
+    private ChatAdapter mChatAdapter;
+
     // Chat List
     private List<ChatUser> mChatuserList = new ArrayList<>();
 
@@ -52,6 +55,12 @@ public class ChatPilot implements Runnable{
         this.mActivity = mActivity;
         this.mUserName = mUserName;
         this.mRoomName = mRoomName;
+
+
+        if (mChatAdapter == null){
+            // temporary
+            mChatAdapter = new ChatAdapter(mContext, mChatuserList, this);
+        }
     }
 
     @Override
@@ -151,7 +160,7 @@ public class ChatPilot implements Runnable{
                             ChatUser chatReceived = new ChatUser("",userName, messageContent);
                             mChatuserList.add(chatReceived);
 
-                            runChatUI();
+//                            runChatUI();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -169,24 +178,20 @@ public class ChatPilot implements Runnable{
 
 
     private void runChatUI(){
+
+//        mActivity.mChatRoomAdapter.notifyDataSetChanged();
         mActivity.runOnUiThread(() -> {
 
-
-            mActivity.mChatRoomAdapter = new ChatAdapter(
-                    mContext,
-                    mChatuserList,
-                    ChatPilot.this
-            );
 
             mActivity.mChatLayoutManager = new LinearLayoutManager(
                     mActivity.getApplicationContext(),
                     RecyclerView.VERTICAL, false);
 
+//            ChatAdapter chatAdapter = mChatAdapter;
+
 
             mActivity.mChatRecycler.setLayoutManager(mActivity.mChatLayoutManager);
-
-            mActivity.mChatRoomAdapter.notifyDataSetChanged();
-            mActivity.mChatRecycler.setAdapter(mActivity.mChatRoomAdapter);
+            mActivity.mChatRecycler.setAdapter(mChatAdapter);
         });
     }
 
