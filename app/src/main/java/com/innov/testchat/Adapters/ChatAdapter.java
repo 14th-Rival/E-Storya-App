@@ -36,7 +36,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private ArrayList<ChatUser> mChatUserList = new ArrayList<>();
 
-    public ChatAdapter(Context mContext, ArrayList<ChatUser> mChatUserList) {s
+    public ChatAdapter(Context mContext, ArrayList<ChatUser> mChatUserList) {
         this.mContext = mContext;
         this.mChatUserList = mChatUserList;
     }
