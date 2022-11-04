@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.innov.testchat.Adapters.ViewHolders.ReceivedMessage;
+import com.innov.testchat.Adapters.ViewHolders.SentMessage;
 import com.innov.testchat.DataModels.ChatUser;
 import com.innov.testchat.R;
 
@@ -34,7 +36,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private ArrayList<ChatUser> mChatUserList = new ArrayList<>();
 
-    public ChatAdapter(Context mContext, ArrayList<ChatUser> mChatUserList) {
+    public ChatAdapter(Context mContext, ArrayList<ChatUser> mChatUserList) {s
         this.mContext = mContext;
         this.mChatUserList = mChatUserList;
     }
@@ -107,35 +109,35 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public static class ReceivedMessage extends RecyclerView.ViewHolder {
-
-        TextView mUsername, mContent;
-        public ReceivedMessage(@NonNull View itemView) {
-            super(itemView);
-
-            mUsername = itemView.findViewById(R.id.msg_userName2);
-            mContent = itemView.findViewById(R.id.msg_content2);
-        }
-
-        public void bind(String mUsername, String mContent){
-            this.mUsername.setText(mUsername);
-            this.mContent.setText(mContent);
-        }
-    }
-
-    public static class SentMessage extends RecyclerView.ViewHolder {
-
-        private TextView mUsernameText, mMsgContent;
-
-        public SentMessage(@NonNull View itemView) {
-            super(itemView);
-            mUsernameText = itemView.findViewById(R.id.msg_userName);
-            mMsgContent = itemView.findViewById(R.id.msg_content);
-        }
-
-        public void bind(String username, String message){
-            mUsernameText.setText(username);
-            mMsgContent.setText(message);
-        }
-    }
+//    public static class ReceivedMessage extends RecyclerView.ViewHolder {
+//
+//        TextView mUsername, mContent;
+//        public ReceivedMessage(@NonNull View itemView) {
+//            super(itemView);
+//
+//            mUsername = itemView.findViewById(R.id.msg_userName2);
+//            mContent = itemView.findViewById(R.id.msg_content2);
+//        }
+//
+//        public void bind(String mUsername, String mContent){
+//            this.mUsername.setText(mUsername);
+//            this.mContent.setText(mContent);
+//        }
+//    }
+//
+//    public static class SentMessage extends RecyclerView.ViewHolder {
+//
+//        private TextView mUsernameText, mMsgContent;
+//
+//        public SentMessage(@NonNull View itemView) {
+//            super(itemView);
+//            mUsernameText = itemView.findViewById(R.id.msg_userName);
+//            mMsgContent = itemView.findViewById(R.id.msg_content);
+//        }
+//
+//        public void bind(String username, String message){
+//            mUsernameText.setText(username);
+//            mMsgContent.setText(message);
+//        }
+//    }
 }
