@@ -12,14 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.innov.testchat.Adapters.ViewHolders.ReceivedMessage;
-import com.innov.testchat.Adapters.ViewHolders.SentMessage;
-import com.innov.testchat.ChatPilot;
 import com.innov.testchat.DataModels.ChatUser;
 import com.innov.testchat.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
@@ -34,13 +32,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
 
     private Context mContext;
-    private List<ChatUser> mChatUserList = new ArrayList<>();
-    private ChatPilot mChatPilot;
+    private ArrayList<ChatUser> mChatUserList = new ArrayList<>();
 
-    public ChatAdapter(Context mContext, List<ChatUser> mChatUserList, ChatPilot mChatPilot) {
+    public ChatAdapter(Context mContext, ArrayList<ChatUser> mChatUserList) {
         this.mContext = mContext;
         this.mChatUserList = mChatUserList;
-        this.mChatPilot = mChatPilot;
     }
 
 
@@ -50,13 +46,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         if (!mChatUser.getUser_id().isEmpty()){
             Log.d(TAG, "====> Main User Chats!");
-
             return VIEW_TYPE_MESSAGE_SENT;
         }
 
-        else {
+        else if (Objects.equals(mChatUser.getUser_id(), "")) {
             Log.d(TAG, "=====> Other user Chats!");
             return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
+
+        else {
+            return 0;
         }
     }
 
@@ -65,22 +64,27 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return mChatUserList.size();
     }
 
+    @Override
+    public void setHasStableIds(boolean hasStableIds) {
+        super.setHasStableIds(hasStableIds);
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
 
-
         if (viewType == VIEW_TYPE_MESSAGE_SENT){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_cardview_one, parent, false);
             mSentMsg = new SentMessage(view);
+            mSentMsg.setIsRecyclable(false);
             return mSentMsg;
-
         }
 
         else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_cardview_two, parent, false);
             mReceivedMsg = new ReceivedMessage(view);
+            mReceivedMsg.setIsRecyclable(false);
             return mReceivedMsg;
         }
 
@@ -91,20 +95,47 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ChatUser mChatuser = mChatUserList.get(position);
-
-
-
         switch (holder.getItemViewType()){
             case VIEW_TYPE_MESSAGE_SENT:
                 mSentMsg.bind(mChatuser.getUser_name(), mChatuser.getUser_message());
-//                notifyDataSetChanged();
+                Log.d(TAG, "====> Sender Message: "+ mChatuser.getUser_message());
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
                 mReceivedMsg.bind(mChatuser.getUser_name(), mChatuser.getUser_message());
-//                notifyDataSetChanged();
+                Log.d(TAG, "====> Received Message: "+ mChatuser.getUser_message());
                 break;
         }
     }
 
+    public static class ReceivedMessage extends RecyclerView.ViewHolder {
 
+        TextView mUsername, mContent;
+        public ReceivedMessage(@NonNull View itemView) {
+            super(itemView);
+
+            mUsername = itemView.findViewById(R.id.msg_userName2);
+            mContent = itemView.findViewById(R.id.msg_content2);
+        }
+
+        public void bind(String mUsername, String mContent){
+            this.mUsername.setText(mUsername);
+            this.mContent.setText(mContent);
+        }
+    }
+
+    public static class SentMessage extends RecyclerView.ViewHolder {
+
+        private TextView mUsernameText, mMsgContent;
+
+        public SentMessage(@NonNull View itemView) {
+            super(itemView);
+            mUsernameText = itemView.findViewById(R.id.msg_userName);
+            mMsgContent = itemView.findViewById(R.id.msg_content);
+        }
+
+        public void bind(String username, String message){
+            mUsernameText.setText(username);
+            mMsgContent.setText(message);
+        }
+    }
 }

@@ -94,6 +94,7 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
 
         if (mUserName.isEmpty() | mRoomName.isEmpty()){
             NullPointerException e = new NullPointerException();
+            e.printStackTrace();
             Log.e(TAG, e.toString());
         }
 
@@ -114,8 +115,7 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
 
     private synchronized void initializeChatView(){
         mChatRecycler = findViewById(R.id.chat_recycler);
-        mChatLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-        mChatRecycler.setLayoutManager(mChatLayoutManager);
+        mChatRecycler.setHasFixedSize(true);
     }
 
     public static void startActivity(Activity mActivity, String userName, String roomName){
@@ -139,7 +139,6 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
 
                     mChatpilot.sendChat(mSendMessage.getText().toString());
                     mSendMessage.setText("");
-                    mSendMessage.clearFocus();
                 }
 
                 break;

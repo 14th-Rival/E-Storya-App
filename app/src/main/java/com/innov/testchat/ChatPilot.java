@@ -1,8 +1,11 @@
 package com.innov.testchat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +33,11 @@ public class ChatPilot implements Runnable{
     private Context mContext;
     private ChatRoomActivity mActivity;
 
-    private String URL = "http://10.146.11.124:4000";
+    // Local
+//    private String URL = "http://10.146.11.124:4000";
+
+    // Tethered Address
+//    private String URL = R.string.server_url_tethered;
     private String TAG = "ChatPilot";
     private Socket mSocket;
 
@@ -38,7 +45,7 @@ public class ChatPilot implements Runnable{
     private ChatAdapter mChatAdapter;
 
     // Chat List
-    private List<ChatUser> mChatuserList = new ArrayList<>();
+    private ArrayList<ChatUser> mChatuserList = new ArrayList<>();
 
     // Chat Data
     public String SOCKET_ID = "";
@@ -56,11 +63,7 @@ public class ChatPilot implements Runnable{
         this.mUserName = mUserName;
         this.mRoomName = mRoomName;
 
-
-        if (mChatAdapter == null){
-            // temporary
-            mChatAdapter = new ChatAdapter(mContext, mChatuserList, this);
-        }
+        initializeChatUI();
     }
 
     @Override
@@ -71,7 +74,7 @@ public class ChatPilot implements Runnable{
     private void initializeConnection(){
         if (mSocket == null){
             try {
-                mSocket = IO.socket(URL);
+                mSocket = IO.socket(mContext.getResources().getString(R.string.server_url_tethered));
                 connect();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -95,11 +98,56 @@ public class ChatPilot implements Runnable{
                 Log.d(TAG, "=====> Socket Id: "+mSocket.id());
                 SOCKET_ID = mSocket.id();
 
-                registerUser();
-            }
 
+                registerUser();
+
+                /***
+                 * Initialize listeners
+                 */
+                onNewUserJoined();
+                updateChatConnection();
+                onUserLeftRoom();
+            }
         }
     };
+
+    private void updateChatConnection(){
+        mSocket.on("updateChat", args -> {
+
+            Object object = null;
+            String userName, messageContent;
+
+            userName=messageContent="";
+
+            for (Object arg : args) {
+
+                if (object == null) {
+                    object = arg;
+
+                    try {
+
+                        JSONObject newObj = new JSONObject(object.toString());
+
+                        userName = newObj.getString("userName");
+                        messageContent = newObj.getString("messageContent");
+                        String roomName = newObj.getString("roomName");
+
+                        Log.d(TAG, "Chat details: " + "\n" + userName + "\n" + messageContent + "\n" + roomName);
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            /***
+             * Updates the Chat UI ChatRoomActivity
+             */
+            updateChatUI(null, userName, messageContent);
+        });
+    }
 
 
     private void registerUser(){
@@ -112,12 +160,20 @@ public class ChatPilot implements Runnable{
             Log.d(TAG, "====> Connected!");
 
             mSocket.emit("subscribe", initialData.toString());
-            mSocket.on("newUserToChatRoom", args -> Log.d(TAG, args[0].toString()+" joined the room"));
-
-
         } catch (JSONException e){
             e.printStackTrace();
         }
+    }
+
+    private void onNewUserJoined(){
+        mSocket.on("newUserToChatRoom", args -> {
+            Log.d(TAG, args[0].toString()+" joined the room");
+        });
+    }
+
+    private void onUserLeftRoom(){
+        mSocket.on("userLeftChatRoom", args ->
+                Log.d(TAG, args[0].toString()+" left the room"));
     }
 
 
@@ -131,45 +187,8 @@ public class ChatPilot implements Runnable{
 
             mSocket.emit("newMessage", sendData);
 
-
-            ChatUser chatSend = new ChatUser(SOCKET_ID, mUserName, message);
-            mChatuserList.add(chatSend);
-
-            if (Objects.equals(chatSend.getUser_id(), mSocket.id())){
-                runChatUI();
-            }
-
-            mSocket.on("updateChat", args -> {
-
-                Object object = null;
-                for (Object arg : args) {
-
-                    if (object == null) {
-                        object = arg;
-
-                        try {
-
-                            JSONObject newObj = new JSONObject(object.toString());
-
-                            String userName = newObj.getString("userName");
-                            String messageContent = newObj.getString("messageContent");
-                            String roomName = newObj.getString("roomName");
-
-                            Log.d(TAG, "Chat details: " + "\n" + userName + "\n" + messageContent + "\n" + roomName);
-
-                            ChatUser chatReceived = new ChatUser("",userName, messageContent);
-                            mChatuserList.add(chatReceived);
-
-//                            runChatUI();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-
+            Log.d(TAG, "====> ChatPilot Send Message: "+message);
+            updateChatUI(SOCKET_ID, mUserName, message);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -177,24 +196,35 @@ public class ChatPilot implements Runnable{
     }
 
 
-    private void runChatUI(){
-
-//        mActivity.mChatRoomAdapter.notifyDataSetChanged();
+    private void initializeChatUI(){
         mActivity.runOnUiThread(() -> {
 
-
+            mChatAdapter = new ChatAdapter(mActivity.getApplicationContext(), mChatuserList);
             mActivity.mChatLayoutManager = new LinearLayoutManager(
                     mActivity.getApplicationContext(),
-                    RecyclerView.VERTICAL, false);
-
-//            ChatAdapter chatAdapter = mChatAdapter;
-
+                    LinearLayoutManager.VERTICAL,
+                    false
+            );
 
             mActivity.mChatRecycler.setLayoutManager(mActivity.mChatLayoutManager);
             mActivity.mChatRecycler.setAdapter(mChatAdapter);
         });
     }
 
+    private void updateChatUI(@Nullable String SOCKETID, @Nullable String username, String message){
 
+        mActivity.runOnUiThread(() -> {
 
+            if (SOCKETID == null){
+                mChatuserList.add(new ChatUser("", username, message));
+            }
+
+            else {
+                mChatuserList.add(new ChatUser(SOCKET_ID, mUserName, message));
+            }
+
+            mChatAdapter.notifyItemInserted(mChatuserList.size());
+            mActivity.mChatRecycler.scrollToPosition(mChatuserList.size() - 1);
+        });
+    }
 }

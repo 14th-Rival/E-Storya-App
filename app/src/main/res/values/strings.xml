@@ -5,4 +5,6 @@
     <string name="user_name">Username: </string>
     <string name="room_name">Room Name: </string>
     <string name="registration_home">Account Registration</string>
+    <string name="server_url_local">http://10.146.11.124:4000</string>
+    <string name="server_url_tethered">http://192.168.34.223:4000</string>
 </resources>
