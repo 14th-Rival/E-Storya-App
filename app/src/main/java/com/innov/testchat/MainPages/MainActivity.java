@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRoomname = findViewById(R.id.tv_input_room);
 
 
-
         /***
          *  Set Error Messages
          */

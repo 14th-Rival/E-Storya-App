@@ -134,8 +134,6 @@ public class ChatPilot implements Runnable{
 
                         Log.d(TAG, "Chat details: " + "\n" + userName + "\n" + messageContent + "\n" + roomName);
 
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
