@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Base64OutputStream;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,22 +25,26 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.innov.testchat.Adapters.AvatarRosterAdapter;
 import com.innov.testchat.DataModels.SelectedAvatar;
 import com.innov.testchat.Dialogs.ImageGalleryDialog;
+import com.innov.testchat.ImageManager;
 import com.innov.testchat.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = "MainActivityLOG";
     private ImageGalleryDialog imageGalleryDialog;
+    private ImageManager imageManager;
     private ImageView img_profile_ava;
     private SelectedAvatar mSelectedAva;
 
     private TextView mSet_error_name, mSet_error_room;
     private TextInputEditText mUsername, mRoomname;
+    private String mUserProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+        initImageManager();
     }
 
     private void initViews(){
@@ -44,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         img_profile_ava = findViewById(R.id.imgview_ava);
-
 
         /***
          * Username and Roomname holder
@@ -66,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * */
         mUsername.addTextChangedListener(mEditUserName);
         mRoomname.addTextChangedListener(mEditRoomName);
-
-
     }
 
     @Override
@@ -75,20 +80,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.button_login:
 
-
                 if (!isValidUser() | !isValidRoom()){
                     return;
                 }
 
                 String userName = mUsername.getText().toString();
                 String roomName = mRoomname.getText().toString();
-                ChatRoomActivity.startActivity(MainActivity.this, userName, roomName);
+                ChatRoomActivity.startActivity(MainActivity.this, mUserProfileImage, userName, roomName);
                 Log.d(TAG, "====> Logged In!");
 
                 break;
 
             case R.id.btn_change_ava:
-                imageGalleryDialog = new ImageGalleryDialog(MainActivity.this, MainActivity.this);
+                imageGalleryDialog = new ImageGalleryDialog(MainActivity.this, MainActivity.this, this.imageManager);
                 imageGalleryDialog.show();
                 break;
 
@@ -98,8 +102,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void setImageProfile(int ava){
-        img_profile_ava.setImageResource(ava);
+    public void setImageProfile(Bitmap ava){
+        img_profile_ava.setImageBitmap(ava);
+
+        if (ava != null){
+            mUserProfileImage = imageManager.imageEncoding(ava);
+            Log.d(TAG, "Base64 Encoded Image: "+ mUserProfileImage);
+        }
     }
 
     private TextWatcher mEditUserName = new TextWatcher() {
@@ -135,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // TODO
         }
     };
-
 
 
     private boolean isValidUser(){
@@ -184,6 +192,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mSet_error_room.setText(null);
 
             return true;
+        }
+    }
+
+    private void initImageManager(){
+
+        if (imageManager == null){
+            imageManager = new ImageManager(MainActivity.this);
         }
     }
 

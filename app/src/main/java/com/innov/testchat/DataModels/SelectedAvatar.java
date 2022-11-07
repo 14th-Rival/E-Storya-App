@@ -1,17 +1,20 @@
 package com.innov.testchat.DataModels;
 
-public class SelectedAvatar {
-    private int selected_avatar;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
-    public SelectedAvatar(int selected_avatar) {
+public class SelectedAvatar {
+    private Bitmap selected_avatar;
+
+    public SelectedAvatar(Bitmap selected_avatar) {
         this.selected_avatar = selected_avatar;
     }
 
-    public int getSelected_avatar() {
+    public Bitmap getSelected_avatar() {
         return selected_avatar;
     }
 
-    public void setSelected_avatar(int selected_avatar) {
+    public void setSelected_avatar(Bitmap selected_avatar) {
         this.selected_avatar = selected_avatar;
     }
 }

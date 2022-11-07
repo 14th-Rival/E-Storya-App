@@ -49,7 +49,7 @@ public class AvatarRosterAdapter extends RecyclerView.Adapter<AvatarRosterAdapte
     public void onBindViewHolder(@NonNull AvatarRosterAdapter.AvatarRosterViewholder holder, int position) {
         AvatarModels avatarModels = avatarModelsList.get(position);
 
-        holder.imageView_avatar.setImageResource(avatarModels.getAvatar_image());
+        holder.imageView_avatar.setImageBitmap(avatarModels.getAvatar_image());
 
         if (selectedItem == holder.getAdapterPosition()) {
             holder.imageView_avatar.setBackground(ContextCompat.getDrawable(holder.imageView_avatar.getContext(), R.drawable.avatar_selected));

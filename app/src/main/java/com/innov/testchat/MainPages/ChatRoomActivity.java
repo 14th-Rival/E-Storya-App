@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.innov.testchat.Adapters.ChatAdapter;
 import com.innov.testchat.ChatPilot;
 import com.innov.testchat.DataModels.ChatUser;
+import com.innov.testchat.ImageManager;
 import com.innov.testchat.R;
 import com.innov.testchat.ScaleImageButton;
 
@@ -39,10 +40,12 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
     public RecyclerView.LayoutManager mChatLayoutManager;
     public ChatAdapter mChatRoomAdapter;
 
+    private ImageManager mImageManager;
     private ChatPilot mChatpilot;
 
     // Static String
     private String TAG = "ChatRoomActivity";
+    private String mUserProfile = "userProfile";
     private String mUserName = "userName";
     private String mRoomName = "roomName";
 
@@ -61,6 +64,7 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initImageManager();
         initData();
     }
 
@@ -79,6 +83,7 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
     private synchronized void initData(){
 
         Intent intent = getIntent();
+        String userProfile = intent.getStringExtra(mUserProfile);
         String userName = intent.getStringExtra(mUserName);
         String roomName = intent.getStringExtra(mRoomName);
 
@@ -87,10 +92,10 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
 
         mRoomNameHeader.setText("Welcome to "+roomName+" room");
 
-        initializeThread(userName, roomName);
+        initializeThread(userProfile, userName, roomName);
     }
 
-    private synchronized void initializeThread(String mUserName, String mRoomName) {
+    private synchronized void initializeThread(String mUserProfile, String mUserName, String mRoomName) {
 
         if (mUserName.isEmpty() | mRoomName.isEmpty()){
             NullPointerException e = new NullPointerException();
@@ -103,6 +108,8 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
                 mChatpilot = new ChatPilot(
                         ChatRoomActivity.this,
                         ChatRoomActivity.this,
+                        mImageManager,
+                        mUserProfile,
                         mUserName,
                         mRoomName
                 );
@@ -118,8 +125,9 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
         mChatRecycler.setHasFixedSize(true);
     }
 
-    public static void startActivity(Activity mActivity, String userName, String roomName){
+    public static void startActivity(Activity mActivity, String encodedProfile, String userName, String roomName){
         Intent i = new Intent(mActivity, ChatRoomActivity.class);
+        i.putExtra("userProfile", encodedProfile);
         i.putExtra("userName", userName);
         i.putExtra("roomName", roomName);
         mActivity.startActivity(i);
@@ -156,6 +164,12 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
 
         else {
             return  true;
+        }
+    }
+
+    private void initImageManager(){
+        if (mImageManager == null){
+            mImageManager = new ImageManager(ChatRoomActivity.this);
         }
     }
 }

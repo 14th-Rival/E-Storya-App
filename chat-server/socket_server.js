@@ -28,14 +28,27 @@ io.on('connection', function(socket) {
     console.log(`Connection : SocketId = ${socket.id}`)
     //Since we are going to use userName through whole socket connection, Let's make it global.   
     var userName = '';
+
+    // Encode Base64 Image as user profile picture
+    var userProfileImage = '';
     
     socket.on('subscribe', function(data) {
+
         console.log('subscribe triggered')
+
         const room_data = JSON.parse(data)
         userName = room_data.userName;
         const roomName = room_data.roomName;
+
+        /***
+         * new data to include using base 64
+         */
+        userProfileImage = room_data.userProfileImage;
+
+       
     
         socket.join(`${roomName}`)
+        console.log(`Profile Image: ${userProfileImage}`)
         console.log(`Username : ${userName} joined Room Name : ${roomName}`)
         
        
@@ -56,6 +69,7 @@ io.on('connection', function(socket) {
         const userName = room_data.userName;
         const roomName = room_data.roomName;
     
+
         console.log(`Username : ${userName} leaved Room Name : ${roomName}`)
         socket.broadcast.to(`${roomName}`).emit('userLeftChatRoom',userName)
         socket.leave(`${roomName}`)
@@ -72,6 +86,11 @@ io.on('connection', function(socket) {
         
         // Just pass the data that has been passed from the writer socket
         const chatData = {
+            /**
+             * Passing the existing profile data such as;
+             * userProfileImage and userName
+             */
+            userProfileImage : userProfileImage,
             userName : userName,
             messageContent : messageContent,
             roomName : roomName

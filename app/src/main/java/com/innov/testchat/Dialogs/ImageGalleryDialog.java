@@ -3,8 +3,11 @@ package com.innov.testchat.Dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.innov.testchat.Adapters.AvatarRosterAdapter;
 import com.innov.testchat.DataModels.AvatarModels;
 import com.innov.testchat.DataModels.SelectedAvatar;
+import com.innov.testchat.ImageManager;
 import com.innov.testchat.MainPages.MainActivity;
 import com.innov.testchat.MainPages.SignupActivity;
 import com.innov.testchat.R;
@@ -32,6 +36,7 @@ import java.util.logging.Handler;
 public class ImageGalleryDialog extends Dialog{
 
     private MainActivity activity;
+    private ImageManager imageManager;
 
     // List and Adapter
     private List<AvatarModels> mAvatarModels = new ArrayList<>();
@@ -41,30 +46,10 @@ public class ImageGalleryDialog extends Dialog{
     private RecyclerView recyclerViewAvatar;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    int[] avatar_images ={
-            R.drawable.image_1,
-            R.drawable.image_2,
-            R.drawable.image_3,
-            R.drawable.image_4,
-            R.drawable.image_5,
-            R.drawable.image_6,
-            R.drawable.image_7,
-            R.drawable.image_8,
-            R.drawable.image_9,
-            R.drawable.image_10,
-            R.drawable.image_11,
-            R.drawable.image_12,
-            R.drawable.image_13,
-            R.drawable.image_14,
-            R.drawable.image_15,
-            R.drawable.image_16,
-            R.drawable.image_17
-    };
-
-
-    public ImageGalleryDialog(@NonNull Context context, MainActivity activity) {
+    public ImageGalleryDialog(@NonNull Context context, MainActivity activity, ImageManager imageManager) {
         super(context);
         this.activity = activity;
+        this.imageManager = imageManager;
         init(context);
     }
 
@@ -114,13 +99,15 @@ public class ImageGalleryDialog extends Dialog{
     private List<AvatarModels> getImageModels() {
         // Insert Images to List
         if (mAvatarModels.isEmpty()) {
-            for (int i=0; i<avatar_images.length; i++){
-                int avatarImage = avatar_images[i];
+
+            int imageArray = imageManager.avatar_images.size();
+            for (int i=0; i<imageArray; i++){
+                Bitmap avatarImage = imageManager.avatar_images.get(i);
                 AvatarModels avatarModels = new AvatarModels(avatarImage);
                 mAvatarModels.add(avatarModels);
             }
         }
-        return  mAvatarModels ;
+        return mAvatarModels ;
     }
 
 }

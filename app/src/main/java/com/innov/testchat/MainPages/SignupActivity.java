@@ -115,8 +115,8 @@ public class SignupActivity extends Activity {
         if (mAvatarModels.isEmpty()) {
             for (int i=0; i<avatar_images.length; i++){
                 int avatarImage = avatar_images[i];
-                AvatarModels avatarModels = new AvatarModels(avatarImage);
-                mAvatarModels.add(avatarModels);
+//                AvatarModels avatarModels = new AvatarModels(avatarImage);
+//                mAvatarModels.add(avatarModels);
             }
         }
         return  mAvatarModels ;
@@ -153,7 +153,7 @@ public class SignupActivity extends Activity {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
                         button_updateAvatar.startAnimation(scale_down);
-                        imageView_avatar.setImageResource(avatarRosterAdapter.selectedAvatar.getSelected_avatar());
+//                        imageView_avatar.setImageResource(avatarRosterAdapter.selectedAvatar.getSelected_avatar());
                         dialogAvatarRoster.dismiss();
                         break;
 
