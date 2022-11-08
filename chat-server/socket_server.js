@@ -45,8 +45,6 @@ io.on('connection', function(socket) {
          */
         userProfileImage = room_data.userProfileImage;
 
-       
-    
         socket.join(`${roomName}`)
         console.log(`Profile Image: ${userProfileImage}`)
         console.log(`Username : ${userName} joined Room Name : ${roomName}`)
@@ -78,9 +76,16 @@ io.on('connection', function(socket) {
     socket.on('newMessage',function(data) {
         console.log('newMessage triggered')
 
+
         const messageData = data
         const messageContent = messageData.messageContent
         const roomName = messageData.roomName
+
+
+        /**
+         * fetching the message in the frontend side as 2 meaning chats from this value came from another user
+         */
+        const messageType = '2'
 
         console.log(`[Room Number ${roomName}] ${userName} : ${messageContent}`)
         
@@ -93,7 +98,8 @@ io.on('connection', function(socket) {
             userProfileImage : userProfileImage,
             userName : userName,
             messageContent : messageContent,
-            roomName : roomName
+            roomName : roomName,
+            messageType : messageType
         }
 
         socket.broadcast.to(`${roomName}`).emit('updateChat',JSON.stringify(chatData)) // Need to be parsed into Kotlin object in Kotlin

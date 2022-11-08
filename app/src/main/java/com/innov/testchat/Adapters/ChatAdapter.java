@@ -4,20 +4,15 @@ package com.innov.testchat.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ColorSpace;
-import android.media.Image;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.innov.testchat.Adapters.ViewHolders.ReceivedMessage;
-import com.innov.testchat.Adapters.ViewHolders.SentMessage;
 import com.innov.testchat.DataModels.ChatUser;
 import com.innov.testchat.ImageManager;
 import com.innov.testchat.R;
@@ -28,85 +23,49 @@ import java.util.Objects;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
-    private static final String user_id = "1";
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
-
-
     private String TAG = "CHAT_ADAPTER";
     private SentMessage mSentMsg;
     private ReceivedMessage mReceivedMsg;
-
-
     private Context mContext;
     private ImageManager imageManager;
-    private ArrayList<ChatUser> mChatUserList = new ArrayList<>();
+    private List<ChatUser> mChatUserList = new ArrayList<>();
 
-    public ChatAdapter(Context mContext, ImageManager imageManager, ArrayList<ChatUser> mChatUserList) {
+    public ChatAdapter(Context mContext, List<ChatUser> mChatUserList) {
         this.mContext = mContext;
-        this.imageManager = imageManager;
+        this.imageManager = new ImageManager(mContext);
         this.mChatUserList = mChatUserList;
     }
 
 
     @Override
     public int getItemViewType(int position) {
-        switch (mChatUserList.get(position).getUser_id()){
-            case user_id:
+        switch (mChatUserList.get(position).getMessageType()){
+            case "1":
                 return VIEW_TYPE_MESSAGE_SENT;
-            case "":
+            case "2":
                 return VIEW_TYPE_MESSAGE_RECEIVED;
-            default:
-                return -1;
         }
 
-//        ChatUser mChatUser = mChatUserList.get(position);
-//
-//        if (!user_id.isEmpty()){
-//            Log.d(TAG, "====> Main User Chats!");
-//            return VIEW_TYPE_MESSAGE_SENT;
-//        }
-////
-//        else {
-//            Log.d(TAG, "=====> Other user Chats!");
-//            return VIEW_TYPE_MESSAGE_RECEIVED;
-//        }
-//        return position;
+        return super.getItemViewType(position);
     }
 
     @Override
     public long getItemId(int position) {
-//        switch (mChatUserList.get(position).getUser_id()){
-//            case user_id:
-//                return VIEW_TYPE_MESSAGE_SENT;
-//            case "":
-//                return VIEW_TYPE_MESSAGE_RECEIVED;
-//            default:
-//                return -1;
-//        }
-//        ChatUser mChatUser = mChatUserList.get(position);
-//
-//        if (Objects.equals(mChatUser.getUser_id(), user_id)){
-//            Log.d(TAG, "====> Main User Chats!");
-//            return VIEW_TYPE_MESSAGE_SENT;
-//        }
-//
-//        else {
-//            Log.d(TAG, "=====> Other user Chats!");
-//            return VIEW_TYPE_MESSAGE_RECEIVED;
-//        }
-        return position;
+        switch (mChatUserList.get(position).getMessageType()){
+            case "1":
+                return VIEW_TYPE_MESSAGE_SENT;
+            case "2":
+                return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
+        return super.getItemId(position);
     }
 
     @Override
     public int getItemCount() {
         return mChatUserList.size();
     }
-
-//    @Override
-//    public void setHasStableIds(boolean hasStableIds) {
-//        super.setHasStableIds(hasStableIds);
-//    }
 
     @NonNull
     @Override
@@ -124,22 +83,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mReceivedMsg = new ReceivedMessage(view);
             return mReceivedMsg;
         }
-
-
-//        if (viewType == VIEW_TYPE_MESSAGE_SENT){
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_cardview_one, parent, false);
-//            mSentMsg = new SentMessage(view);
-//            mSentMsg.setIsRecyclable(false);
-//            return mSentMsg;
-//        }
-
-//        else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED){
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_cardview_two, parent, false);
-//            mReceivedMsg = new ReceivedMessage(view);
-//            mReceivedMsg.setIsRecyclable(false);
-//            return mReceivedMsg;
-//        }
-//
         return null;
     }
 
@@ -148,36 +91,56 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ChatUser mChatuser = mChatUserList.get(position);
 
-        switch (mChatUserList.get(position).getUser_id()){
 
-            case user_id:
+        if (Objects.equals(mChatuser.getMessageType(), "1")){
+            mSentMsg = (SentMessage) holder;
+            mSentMsg.mUsernameText.setText(mChatuser.getUser_name());
+            mSentMsg.mMsgContent.setText(mChatuser.getUser_message());
+        }
 
-                mSentMsg.bind(mChatuser.getUser_name(), mChatuser.getUser_message());
-                Log.d(TAG, "====> Sender Message: "+ mChatuser.getUser_message());
-                break;
+        else if (Objects.equals(mChatuser.getMessageType(), "2")) {
+
+            mReceivedMsg = (ReceivedMessage) holder;
+
+            Bitmap bm;
+
+            if (Objects.equals(mChatuser.getUser_image(), "") | mChatuser.getUser_image().isEmpty()){
+                bm = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_17);
+            }
+
+            else {
+                bm = imageManager.imageDecoding(mChatuser.getUser_image());
+            }
+
+            mReceivedMsg.mUserProfile.setImageBitmap(bm);
+            mReceivedMsg.mUsername.setText(mChatuser.getUser_name());
+            mReceivedMsg.mContent.setText(mChatuser.getUser_message());
+        }
+    }
+
+    public static class SentMessage extends RecyclerView.ViewHolder {
+
+        public TextView mUsernameText, mMsgContent;
+
+        public SentMessage(@NonNull View itemView) {
+            super(itemView);
+
+            mUsernameText = itemView.findViewById(R.id.msg_userName);
+            mMsgContent = itemView.findViewById(R.id.msg_content);
+        }
+    }
 
 
-            case "":
+    public static class ReceivedMessage extends RecyclerView.ViewHolder {
+        public TextView mUsername, mContent;
+        public ImageView mUserProfile;
 
-                Bitmap bm;
+        public ReceivedMessage(@NonNull View itemView) {
+            super(itemView);
 
-                if (Objects.equals(mChatuser.getUser_image(), "") | mChatuser.getUser_image().isEmpty()){
-                    bm = BitmapFactory.decodeResource(holder.itemView.getContext().getResources(), R.drawable.image_17);
-                }
-
-                else {
-                    bm = imageManager.imageDecoding(mChatuser.getUser_image());
-                }
-
-                mReceivedMsg.bind(
-                        bm,
-                        mChatuser.getUser_name(),
-                        mChatuser.getUser_message()
-                );
-
-
-                Log.d(TAG, "====> Received Message: "+ mChatuser.getUser_message());
-                break;
+            mUserProfile = itemView.findViewById(R.id.chathead_profile);
+            mUsername = itemView.findViewById(R.id.msg_userName2);
+            mContent = itemView.findViewById(R.id.msg_content2);
         }
     }
 }

@@ -33,7 +33,8 @@ public class ChatPilot implements Runnable{
 
     private Context mContext;
     private ChatRoomActivity mActivity;
-    private ImageManager mImageManager;
+    private final static String SENDER = "1";
+    private final static String RECEIVER = "2";
 
     // Local
 //    private String URL = "http://10.146.11.124:4000";
@@ -47,7 +48,7 @@ public class ChatPilot implements Runnable{
     private ChatAdapter mChatAdapter;
 
     // Chat List
-    private ArrayList<ChatUser> mChatuserList = new ArrayList<>();
+    private final List<ChatUser> mChatuserList = new ArrayList<>();
 
     // Chat Data
     public String User_ID = "1";
@@ -66,7 +67,6 @@ public class ChatPilot implements Runnable{
     ){
         this.mContext = mContext;
         this.mActivity = mActivity;
-        this.mImageManager = mImageManager;
         this.mUserProfile = mUserProfile;
         this.mUserName = mUserName;
         this.mRoomName = mRoomName;
@@ -151,7 +151,7 @@ public class ChatPilot implements Runnable{
             /***
              * Updates the Chat UI ChatRoomActivity
              */
-            updateChatUI(null, userProfile, userName, messageContent);
+            updateChatUI(null, userProfile, userName, messageContent, RECEIVER);
         });
     }
 
@@ -197,7 +197,7 @@ public class ChatPilot implements Runnable{
             mSocket.emit("newMessage", sendData);
 
             Log.d(TAG, "====> ChatPilot Send Message: "+message);
-            updateChatUI(User_ID, mUserProfile, mUserName, message);
+            updateChatUI(User_ID, mUserProfile, mUserName, message, SENDER);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -208,7 +208,7 @@ public class ChatPilot implements Runnable{
     private void initializeChatUI(){
         mActivity.runOnUiThread(() -> {
 
-            mChatAdapter = new ChatAdapter(mActivity.getApplicationContext(), mImageManager, mChatuserList);
+            mChatAdapter = new ChatAdapter(mActivity.getApplicationContext(), mChatuserList);
             mActivity.mChatLayoutManager = new LinearLayoutManager(
                     mActivity.getApplicationContext(),
                     LinearLayoutManager.VERTICAL,
@@ -220,19 +220,30 @@ public class ChatPilot implements Runnable{
         });
     }
 
-    private void updateChatUI(@Nullable String SOCKETID, String userProfile, @Nullable String username, String message){
-
+    private void updateChatUI(@Nullable String userId, String userProfile, @Nullable String username, String message, @Nullable String messageType){
         mActivity.runOnUiThread(() -> {
 
-            if (SOCKETID == null){
-                mChatuserList.add(new ChatUser("", userProfile, username, message));
+            Log.d(TAG, "====> Msg Type: "+messageType);
+
+            /***
+             * Receiver End
+             */
+
+            if (userId == null){
+                mChatuserList.add(new ChatUser("", userProfile, username, message, messageType));
+                mChatAdapter.notifyItemInserted(mChatuserList.size());
             }
+
+
+            /***
+             * Sender End
+             */
 
             else {
-                mChatuserList.add(new ChatUser(User_ID, this.mUserProfile, this.mUserName, message));
+                mChatuserList.add(new ChatUser(User_ID, this.mUserProfile, this.mUserName, message, messageType));
+                mChatAdapter.notifyItemInserted(mChatuserList.size());
             }
 
-            mChatAdapter.notifyItemInserted(mChatuserList.size());
             mActivity.mChatRecycler.scrollToPosition(mChatuserList.size() - 1);
         });
     }

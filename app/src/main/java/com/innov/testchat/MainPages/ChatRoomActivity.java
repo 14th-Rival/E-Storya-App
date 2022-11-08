@@ -122,7 +122,6 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
 
     private synchronized void initializeChatView(){
         mChatRecycler = findViewById(R.id.chat_recycler);
-        mChatRecycler.setHasFixedSize(true);
     }
 
     public static void startActivity(Activity mActivity, String encodedProfile, String userName, String roomName){
