@@ -29,7 +29,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 
-public class ChatPilot implements Runnable{
+public class ChatPilot implements Runnable {
 
     private Context mContext;
     private ChatRoomActivity mActivity;
@@ -123,7 +123,6 @@ public class ChatPilot implements Runnable{
 
             Object object = null;
             String userProfile, userName, messageContent;
-
             userProfile=userName=messageContent="";
 
             for (Object arg : args) {

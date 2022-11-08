@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -93,6 +95,7 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
         mRoomNameHeader.setText("Welcome to "+roomName+" room");
 
         initializeThread(userProfile, userName, roomName);
+        mEditorAction();
     }
 
     private synchronized void initializeThread(String mUserProfile, String mUserName, String mRoomName) {
@@ -147,7 +150,6 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
                     mChatpilot.sendChat(mSendMessage.getText().toString());
                     mSendMessage.setText("");
                 }
-
                 break;
         }
     }
@@ -170,5 +172,23 @@ public class ChatRoomActivity extends Activity implements View.OnClickListener {
         if (mImageManager == null){
             mImageManager = new ImageManager(ChatRoomActivity.this);
         }
+    }
+
+    private void mEditorAction(){
+        mSendMessage.setOnEditorActionListener((v, actionId, event) -> {
+
+            if (actionId == EditorInfo.IME_ACTION_SEND){
+
+                if (!isThereAMessage()){
+                    return false;
+                }
+
+                mChatpilot.sendChat(mSendMessage.getText().toString());
+                mSendMessage.setText("");
+                return true;
+            }
+
+            return false;
+        });
     }
 }

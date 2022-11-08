@@ -18,4 +18,10 @@
     <color name="dark_red">#D1193E</color>
     <color name="mid_red">#EE3E38</color>
     <color name="light_red">#F86E61</color>
+
+
+    <color name="dark_green">#4C9A2A</color>
+    <color name="mid_mid_green">#76BA1B</color>
+    <color name="mid_green">#68BB59</color>
+    <color name="light_green">#ACDF87</color>
 </resources>

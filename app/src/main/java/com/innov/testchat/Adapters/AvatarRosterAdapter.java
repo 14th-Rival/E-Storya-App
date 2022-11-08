@@ -98,5 +98,4 @@ public class AvatarRosterAdapter extends RecyclerView.Adapter<AvatarRosterAdapte
             });
         }
     }
-
 }

@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('<h1>Hello world</h1>');
+    res.send('<h1>Welcome to </h1>');
   });
 
 server.listen(4000,()=>{
@@ -81,12 +81,6 @@ io.on('connection', function(socket) {
         const messageContent = messageData.messageContent
         const roomName = messageData.roomName
 
-
-        /**
-         * fetching the message in the frontend side as 2 meaning chats from this value came from another user
-         */
-        const messageType = '2'
-
         console.log(`[Room Number ${roomName}] ${userName} : ${messageContent}`)
         
         // Just pass the data that has been passed from the writer socket
@@ -99,7 +93,6 @@ io.on('connection', function(socket) {
             userName : userName,
             messageContent : messageContent,
             roomName : roomName,
-            messageType : messageType
         }
 
         socket.broadcast.to(`${roomName}`).emit('updateChat',JSON.stringify(chatData)) // Need to be parsed into Kotlin object in Kotlin
@@ -107,10 +100,13 @@ io.on('connection', function(socket) {
 
     //If you want to add typing function you can make it like this.
     
-    // socket.on('typing',function(roomNumber){ //Only roomNumber is needed here
-    //     console.log('typing triggered')
-    //     socket.broadcast.to(`${roomNumber}`).emit('typing')
-    // })
+    socket.on('typing',function(roomNumber){ //Only roomNumber is needed here
+
+        const userName = 
+
+        console.log('typing triggered')
+        socket.broadcast.to(`${roomNumber}`).emit('typing')
+    })
 
     // socket.on('stopTyping',function(roomNumber){ //Only roomNumber is needed here
     //     console.log('stopTyping triggered')

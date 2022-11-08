@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Test Chat</string>
+    <string name="app_name">E-Storya</string>
     <string name="chat_room">Make or Join a Room</string>
     <string name="version">Version 1.0</string>
     <string name="user_name">Username: </string>
