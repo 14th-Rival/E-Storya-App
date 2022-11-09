@@ -40,6 +40,7 @@ public class ImageManager {
         avatar_images.add(getImage(mContext, R.drawable.image_15));
         avatar_images.add(getImage(mContext, R.drawable.image_16));
         avatar_images.add(getImage(mContext, R.drawable.image_17));
+        avatar_images.add(getImage(mContext, R.drawable.gds));
     }
 
     private Bitmap getImage(Context getContext, int id){

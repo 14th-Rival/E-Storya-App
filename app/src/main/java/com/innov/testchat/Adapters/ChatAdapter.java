@@ -4,6 +4,7 @@ package com.innov.testchat.Adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +95,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         if (Objects.equals(mChatuser.getMessageType(), "1")){
             mSentMsg = (SentMessage) holder;
-            mSentMsg.mUsernameText.setText(mChatuser.getUser_name());
             mSentMsg.mMsgContent.setText(mChatuser.getUser_message());
         }
 
@@ -105,7 +105,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             Bitmap bm;
 
             if (Objects.equals(mChatuser.getUser_image(), "") | mChatuser.getUser_image().isEmpty()){
-                bm = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_17);
+                bm = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_profile_removebg_preview);
             }
 
             else {
@@ -125,7 +125,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public SentMessage(@NonNull View itemView) {
             super(itemView);
 
-            mUsernameText = itemView.findViewById(R.id.msg_userName);
             mMsgContent = itemView.findViewById(R.id.msg_content);
         }
     }

@@ -92,7 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_change_ava:
-                imageGalleryDialog = new ImageGalleryDialog(MainActivity.this, MainActivity.this, this.imageManager);
+                imageGalleryDialog = new ImageGalleryDialog(
+                        MainActivity.this,
+                        MainActivity.this,
+                        this.imageManager
+                );
+
                 imageGalleryDialog.show();
                 break;
 
